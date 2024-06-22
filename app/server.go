@@ -43,17 +43,15 @@ func handleConnection(connection net.Conn) {
 	//retrieve url path
 	path := strings.Split(request, " ")[1]
 
-	//default 200OK
 	if path == "/" {
+		//default 200OK
 		connection.Write([]byte("HTTP/1.1 200 OK\r\n\r\n"))
-	}
-	//echo request
-	else if strings.Split(path, "/")[1] == "echo" {
+	} else if strings.Split(path, "/")[1] == "echo" {
+		//echo request
 		message := strings.Split(path, "/")[2]
 		connection.Write([]byte(fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s", len(message), message)))
-	}
-	//invalid 404
-	else {
+	}else {
+		//invalid 404
 		connection.Write([]byte("HTTP/1.1 404 Not Found\r\n\r\n"))
 	}
 }
