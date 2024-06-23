@@ -3,6 +3,7 @@ import (
 	"fmt"
 	"net"
 	"os"
+	"path"
 	"strings"
 )
 func main() {
@@ -72,7 +73,7 @@ func handleConnection(connection net.Conn) {
 		content:= strings.Split(request,"\r\n")[len(request)-1]
 		content = strings.Trim(content , "\x00")
 		dir := os.Args[2]
-		_ = os.WriteFile(path.Join(dir, p[7:]), []byte(content), 0644)
+		_ = os.WriteFile(path.Join(dir, path[7:]), []byte(content), 0644)
 		response = "HTTP/1.1 201 Created\r\n\r\n"
 
 	}else {
