@@ -38,10 +38,12 @@ func handleConnection(connection net.Conn) {
 	//console testing
 	fmt.Printf("Request: %s\n", requestBuffer[:n])
 
-	request := string(requestBuffer[:n])
-
 	//retrieve url path
 	path := strings.Split(request, " ")[1]
+
+	request := string(requestBuffer[:n])
+
+	response := ""
 
 	if path == "/" {
 		//default 200OK
@@ -54,7 +56,7 @@ func handleConnection(connection net.Conn) {
 		//user-agent
 		temp := strings.Split(request, ":")[3]
 		message := strings.Split(temp,"\r\n")[0]
-		message = strings.ReplaceAll(message, " ", "")
+		message = strings.ReplaceAll(message, " ", "") //clean whitespace
 		response = fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s", len(message), message)
 	}else if strings.Split(path, "/")[1] == "files"{
 		//files
