@@ -1,5 +1,3 @@
-Simple HTTP Server in Go
-
 This is a simple HTTP server written in Go that supports basic GET and POST requests for handling files and echoing messages.
 
 Features:
