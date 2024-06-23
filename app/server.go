@@ -69,7 +69,8 @@ func handleConnection(connection net.Conn) {
 			response = fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: %d\r\n\r\n%s", len(data), data)
 		}
 	}else if strings.Split(path, "/")[1] == "files" && method == "POST"{
-		content := strings.Trim(r[len(r)-1], "\x00")
+		content:= strings.Split(request,"\r\n")[len(request)-1]
+		content = strings.Trim(content , "\x00")
 		dir := os.Args[2]
 		_ = os.WriteFile(path.Join(dir, p[7:]), []byte(content), 0644)
 		response = "HTTP/1.1 201 Created\r\n\r\n"
