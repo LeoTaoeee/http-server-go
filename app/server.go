@@ -50,6 +50,11 @@ func handleConnection(connection net.Conn) {
 		//echo request
 		message := strings.Split(path, "/")[2]
 		connection.Write([]byte(fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s", len(message), message)))
+	}else if strings.Split(path, "/")[1] == "user-agent"{
+		//user-agent
+		temp := strings.Split(request, ":")[2]
+		message := strings.Split(temp,"\r\n")[0]
+		connection.Write([]byte(fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s", len(message), message)))
 	}else {
 		//invalid 404
 		connection.Write([]byte("HTTP/1.1 404 Not Found\r\n\r\n"))
