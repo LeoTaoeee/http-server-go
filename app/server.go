@@ -56,6 +56,16 @@ func handleConnection(connection net.Conn) {
 		message := strings.Split(temp,"\r\n")[0]
 		message = strings.ReplaceAll(message, " ", "")
 		connection.Write([]byte(fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s", len(message), message)))
+	}else if strings.Split(path, "/")[1] == "files"{
+		//files
+		dir := os.Args[2]
+		fileName := strings.TrimPrefix(path, "/files/")
+		data, err := os.ReadFile(dir + fileName)
+		if err != nil {
+			response = "HTTP/1.1 404 Not Found\r\n\r\n"
+		} else {
+			response = fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: %d\r\n\r\n%s", len(data), data)
+		}
 	}else {
 		//invalid 404
 		connection.Write([]byte("HTTP/1.1 404 Not Found\r\n\r\n"))
