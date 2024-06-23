@@ -73,5 +73,5 @@ func handleConnection(connection net.Conn) {
 		response = "HTTP/1.1 404 Not Found\r\n\r\n"
 	}
 
-	conn.Write([]byte(response))
+	connection.Write([]byte(response))
 }
