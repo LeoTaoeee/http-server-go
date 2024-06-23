@@ -73,5 +73,8 @@ func handleConnection(connection net.Conn) {
 			response = "HTTP/1.1 404 Not Found\r\n\r\n"
 		}
 	}
+	else if meth = "POST"{
+		response = "suck\r\n\r\n"
+	}
 	connection.Write([]byte(response))
 }
