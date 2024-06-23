@@ -39,37 +39,39 @@ func handleConnection(connection net.Conn) {
 	meth := strings.Split(request," ")[0]
 	path := strings.Split(request, " ")[1]
 	response := ""
-	if path == "/" {
-		//default 200OK
-		connection.Write([]byte("HTTP/1.1 200 OK\r\n\r\n"))
-		response = "HTTP/1.1 200 OK\r\n\r\n"
-	} else if strings.Split(path, "/")[1] == "echo" {
-		//echo request
-		message := strings.Split(path, "/")[2]
-		connection.Write([]byte(fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s", len(message), message)))
-		response = fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s", len(message), message)
-	} else if strings.Split(path, "/")[1] == "user-agent" {
-		//user-agent
-		temp := strings.Split(request, ":")[3]
-		message := strings.Split(temp, "\r\n")[0]
-		message = strings.ReplaceAll(message, " ", "")
-		connection.Write([]byte(fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s", len(message), message)))
-		message = strings.ReplaceAll(message, " ", "") //clean whitespace
-		response = fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s", len(message), message)
-	} else if strings.Split(path, "/")[1] == "files" {
-		//files
-		dir := os.Args[2]
-		fileName := strings.TrimPrefix(path, "/files/")
-		data, err := os.ReadFile(dir + fileName)
-		if err != nil {
-			response = "HTTP/1.1 404 Not Found\r\n\r\n"
+	if meth == "GET"{
+		if path == "/" {
+			//default 200OK
+			connection.Write([]byte("HTTP/1.1 200 OK\r\n\r\n"))
+			response = "HTTP/1.1 200 OK\r\n\r\n"
+		} else if strings.Split(path, "/")[1] == "echo" {
+			//echo request
+			message := strings.Split(path, "/")[2]
+			connection.Write([]byte(fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s", len(message), message)))
+			response = fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s", len(message), message)
+		} else if strings.Split(path, "/")[1] == "user-agent" {
+			//user-agent
+			temp := strings.Split(request, ":")[3]
+			message := strings.Split(temp, "\r\n")[0]
+			message = strings.ReplaceAll(message, " ", "")
+			connection.Write([]byte(fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s", len(message), message)))
+			message = strings.ReplaceAll(message, " ", "") //clean whitespace
+			response = fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s", len(message), message)
+		} else if strings.Split(path, "/")[1] == "files" {
+			//files
+			dir := os.Args[2]
+			fileName := strings.TrimPrefix(path, "/files/")
+			data, err := os.ReadFile(dir + fileName)
+			if err != nil {
+				response = "HTTP/1.1 404 Not Found\r\n\r\n"
+			} else {
+				response = fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: %d\r\n\r\n%s", len(data), data)
+			}
 		} else {
-			response = fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: %d\r\n\r\n%s", len(data), data)
+			//invalid 404
+			connection.Write([]byte("HTTP/1.1 404 Not Found\r\n\r\n"))
+			response = "HTTP/1.1 404 Not Found\r\n\r\n"
 		}
-	} else {
-		//invalid 404
-		connection.Write([]byte("HTTP/1.1 404 Not Found\r\n\r\n"))
-		response = "HTTP/1.1 404 Not Found\r\n\r\n"
 	}
 	connection.Write([]byte(response))
 }
