@@ -38,10 +38,10 @@ func handleConnection(connection net.Conn) {
 	//console testing
 	fmt.Printf("Request: %s\n", requestBuffer[:n])
 
+	request := string(requestBuffer[:n])
+
 	//retrieve url path
 	path := strings.Split(request, " ")[1]
-
-	request := string(requestBuffer[:n])
 
 	response := ""
 
