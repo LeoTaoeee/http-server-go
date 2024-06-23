@@ -45,17 +45,17 @@ func handleConnection(connection net.Conn) {
 
 	if path == "/" {
 		//default 200OK
-		connection.Write([]byte("HTTP/1.1 200 OK\r\n\r\n"))
+		response = "HTTP/1.1 200 OK\r\n\r\n"
 	} else if strings.Split(path, "/")[1] == "echo" {
 		//echo request
 		message := strings.Split(path, "/")[2]
-		connection.Write([]byte(fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s", len(message), message)))
+		response = fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s", len(message), message)
 	}else if strings.Split(path, "/")[1] == "user-agent"{
 		//user-agent
 		temp := strings.Split(request, ":")[3]
 		message := strings.Split(temp,"\r\n")[0]
 		message = strings.ReplaceAll(message, " ", "")
-		connection.Write([]byte(fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s", len(message), message)))
+		response = fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s", len(message), message)
 	}else if strings.Split(path, "/")[1] == "files"{
 		//files
 		dir := os.Args[2]
@@ -68,6 +68,8 @@ func handleConnection(connection net.Conn) {
 		}
 	}else {
 		//invalid 404
-		connection.Write([]byte("HTTP/1.1 404 Not Found\r\n\r\n"))
+		response = "HTTP/1.1 404 Not Found\r\n\r\n"
 	}
+
+	conn.Write([]byte(response))
 }
