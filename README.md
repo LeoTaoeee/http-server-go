@@ -1,38 +1,32 @@
-[![progress-banner](https://backend.codecrafters.io/progress/http-server/6ad7be3c-d336-44f0-bc50-7a2e759b66c9)](https://app.codecrafters.io/users/codecrafters-bot?r=2qF)
+Simple HTTP Server in Go
+This is a simple HTTP server written in Go that supports basic GET and POST requests for handling files and echoing messages.
 
-This is a starting point for Go solutions to the
-["Build Your Own HTTP server" Challenge](https://app.codecrafters.io/courses/http-server/overview).
+Features:
+Handles GET requests for:
 
-[HTTP](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol) is the
-protocol that powers the web. In this challenge, you'll build a HTTP/1.1 server
-that is capable of serving multiple clients.
+Root ("/")
+Echoing messages ("/echo/{message}")
+User agent ("/user-agent")
+Serving files ("/files/{filename}")
 
-Along the way you'll learn about TCP servers,
-[HTTP request syntax](https://www.w3.org/Protocols/rfc2616/rfc2616-sec5.html),
-and more.
+Supports POST requests for:
 
-**Note**: If you're viewing this repo on GitHub, head over to
-[codecrafters.io](https://codecrafters.io) to try the challenge.
+Uploading files ("/files/{filename}")
 
-# Passing the first stage
+Make requests:
 
-The entry point for your HTTP server implementation is in `app/server.go`. Study
-and uncomment the relevant code, and push your changes to pass the first stage:
+GET Request Examples:
 
-```sh
-git add .
-git commit -m "pass 1st stage" # any msg
-git push origin master
-```
+curl http://localhost:4221/
+curl http://localhost:4221/echo/hello
+curl http://localhost:4221/user-agent
+curl http://localhost:4221/files/{filename}
+POST Request Example:
 
-Time to move on to the next stage!
+curl -X POST -d "data_to_upload" http://localhost:4221/files/{filename}
 
-# Stage 2 & beyond
+Credits to https://app.codecrafters.io/courses/http-server
 
-Note: This section is for stages 2 and beyond.
-
-1. Ensure you have `go (1.19)` installed locally
-1. Run `./your_server.sh` to run your program, which is implemented in
-   `app/server.go`.
-1. Commit your changes and run `git push origin master` to submit your solution
-   to CodeCrafters. Test output will be streamed to your terminal.
+Prerequisites:
+Go 1.16 or higher installed
+Operating system: Linux, macOS, or Windows
