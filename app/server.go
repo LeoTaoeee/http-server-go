@@ -54,7 +54,7 @@ func handleConnection(connection net.Conn) {
 		//user-agent
 		temp := strings.Split(request, ":")[3]
 		message := strings.Split(temp,"\r\n")[0]
-		message := strings.ReplaceAll(randomString, " ", "")
+		message = strings.ReplaceAll(randomString, " ", "")
 		connection.Write([]byte(fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s", len(message), message)))
 	}else {
 		//invalid 404
