@@ -58,7 +58,7 @@ func handleConnection(connection net.Conn) {
 		message := strings.Split(temp,"\r\n")[0]
 		message = strings.ReplaceAll(message, " ", "") //clean whitespace
 		response = fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s", len(message), message)
-	}else if strings.Split(path, "/")[1] == "files" && method = "GET"{
+	}else if strings.Split(path, "/")[1] == "files" && method == "GET"{
 		//files
 		dir := os.Args[2]
 		fileName := strings.TrimPrefix(path, "/files/")
@@ -68,7 +68,7 @@ func handleConnection(connection net.Conn) {
 		} else {
 			response = fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: %d\r\n\r\n%s", len(data), data)
 		}
-	}else if strings.Split(path, "/")[1] == "files" && method = "POST"{
+	}else if strings.Split(path, "/")[1] == "files" && method == "POST"{
 		content := strings.Trim(r[len(r)-1], "\x00")
 		dir := os.Args[2]
 		_ = os.WriteFile(path.Join(dir, p[7:]), []byte(content), 0644)
