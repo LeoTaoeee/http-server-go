@@ -48,7 +48,7 @@ func handleConnection(connection net.Conn) {
 		connection.Write([]byte("HTTP/1.1 200 OK\r\n\r\n"))
 	} else if strings.Split(path, "/")[1] == "echo" {
 		//echo request
-		message := strings.Split(path, "/")[2]
+		message := strings.Split(path, "/")[3]
 		connection.Write([]byte(fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s", len(message), message)))
 	}else if strings.Split(path, "/")[1] == "user-agent"{
 		//user-agent
