@@ -3,7 +3,6 @@ import (
 	"fmt"
 	"net"
 	"os"
-	"path"
 	"strings"
 )
 func main() {
