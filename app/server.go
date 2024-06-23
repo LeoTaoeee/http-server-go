@@ -40,7 +40,7 @@ func handleConnection(connection net.Conn) {
 
 	request := string(requestBuffer[:n])
 
-	//retrieve url path
+	method := strings.Split(request, " ")[0]
 	path := strings.Split(request, " ")[1]
 
 	response := ""
@@ -58,7 +58,7 @@ func handleConnection(connection net.Conn) {
 		message := strings.Split(temp,"\r\n")[0]
 		message = strings.ReplaceAll(message, " ", "") //clean whitespace
 		response = fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s", len(message), message)
-	}else if strings.Split(path, "/")[1] == "files"{
+	}else if strings.Split(path, "/")[1] == "files" && method = "GET"{
 		//files
 		dir := os.Args[2]
 		fileName := strings.TrimPrefix(path, "/files/")
@@ -68,6 +68,12 @@ func handleConnection(connection net.Conn) {
 		} else {
 			response = fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: %d\r\n\r\n%s", len(data), data)
 		}
+	}else if strings.Split(path, "/")[1] == "files" && method = "POST"{
+		content := strings.Trim(r[len(r)-1], "\x00")
+		dir := os.Args[2]
+		_ = os.WriteFile(path.Join(dir, p[7:]), []byte(content), 0644)
+		response = "HTTP/1.1 201 Created\r\n\r\n"
+
 	}else {
 		//invalid 404
 		response = "HTTP/1.1 404 Not Found\r\n\r\n"
